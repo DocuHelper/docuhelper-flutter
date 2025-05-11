@@ -45,5 +45,24 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocalNetworkUsageDescription</key>
+    <string>디버깅을 위해 로컬 네트워크 접근 권한이 필요합니다.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_dartobservatory._tcp</string>
+    </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+	  <dict>
+	    <key>CFBundleTypeRole</key>
+	    <string>Editor</string>
+	    <key>CFBundleURLSchemes</key>
+	    <array>
+	      <string>com.googleusercontent.apps.686711888253-73lv85cibfelr4agi6bjkif339tv9fap</string>
+	    </array>
+	  </dict>
+	</array>
+    <key>GIDClientID</key>
+    <string>686711888253-73lv85cibfelr4agi6bjkif339tv9fap.apps.googleusercontent.com</string>
 </dict>
 </plist>

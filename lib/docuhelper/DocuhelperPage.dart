@@ -1,0 +1,1 @@
+enum DocuhelperPage { HOME, LOGIN }
