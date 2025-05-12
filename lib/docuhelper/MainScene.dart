@@ -18,17 +18,6 @@ class _MainScene extends State<MainScene> {
   Widget build(BuildContext context) {
     var appState = context.watch<DocuhelperAppState>();
 
-    getJwt().then((value) {
-      if (value == null) {
-        appState.changePage(DocuhelperPage.LOGIN);
-      } else {
-        verifyDocuhelperToken(value).then((value) {
-          if (!value) {
-            appState.changePage(DocuhelperPage.LOGIN);
-          }
-        });
-      }
-    });
 
     Widget page;
 
