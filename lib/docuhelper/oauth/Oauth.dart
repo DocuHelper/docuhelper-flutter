@@ -18,6 +18,7 @@ Future<bool> verifyDocuhelperToken(token) async {
   );
 
   if (response.statusCode != 204) {
+  // if (response.statusCode != 200) {
     return false;
   }
 

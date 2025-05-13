@@ -30,8 +30,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () async {
                 try {
                   await signInWithGoogle();
-                  setState(() => _isLoggedIn = true);
-                  appState.changePage(DocuhelperPage.HOME);
+                  await appState.checkAuth();
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('로그인 성공')),
@@ -47,8 +46,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                await signOut();
-                setState(() => _isLoggedIn = false);
+                await appState.logout();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('로그아웃 완료')),
                 );
