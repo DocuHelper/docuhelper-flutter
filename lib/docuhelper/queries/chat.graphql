@@ -1,0 +1,32 @@
+mutation SendChat($query: ChatSendRequestInput!) {
+    send(request:$query) {
+        uuid,
+        state,
+        document,
+        userAsk,
+        result
+    }
+}
+
+query FindChat($query: ChatQueryRequestInput!) {
+    findChat(queryRequest: $query) {
+        uuid
+        userAsk,
+        result,
+        document,
+        state,
+    }
+}
+
+query FindChatAnswerRef($query : AnswerRefQueryRequestInput!) {
+    findAnswerRefWithChunk(request: $query) {
+        answerRef {
+            similarity
+        }
+        chunk {
+            content
+            page
+            num
+        }
+    }
+}

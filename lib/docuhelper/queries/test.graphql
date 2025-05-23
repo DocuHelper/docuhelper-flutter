@@ -1,0 +1,5 @@
+subscription TestSubscription($limit: Int) {
+    counter(limit: $limit) {
+        value
+    }
+}

@@ -1,0 +1,23 @@
+#builders:
+#  graphql_codegen:
+#    import: 'package:graphql_codegen/builder.dart'
+#    builder_factories: ['GraphQLBuilder.builder']
+#    build_extensions: {'$lib$': ['.graphql.dart']}
+#    auto_apply: dependents
+#    build_to: source
+#    runs_before:
+#      - json_serializable:json_serializable
+
+# build.yaml
+
+targets:
+  $default:
+    builders:
+      graphql_codegen:
+        options:
+          generate_loader: false
+          clients:
+            - graphql
+            - graphql_flutter
+          addTypenameExcludedPaths:
+            - subscription

@@ -1,4 +1,6 @@
+import 'package:docuhelper_flutter/docuhelper/DocuhelperAppState.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatLog extends StatelessWidget {
   const ChatLog({
@@ -7,19 +9,14 @@ class ChatLog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<DocuhelperAppState>();
     return SingleChildScrollView(
       child: Column(
-        children: [
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-          Chat(question: "안녕", answer: "반가워"),
-        ],
+        children: appState.userChatHistory.map(
+          (e) {
+            return Chat(question: e.userAsk, answer: e.result ?? "뒤적뒤적");
+          },
+        ).toList(),
       ),
     );
   }
@@ -81,10 +78,17 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(text),
+    final maxWidth = MediaQuery.of(context).size.width * 0.7;
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            text,
+            softWrap: true,
+          ),
+        ),
       ),
     );
   }

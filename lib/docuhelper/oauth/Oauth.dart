@@ -1,3 +1,4 @@
+import 'package:docuhelper_flutter/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,7 @@ final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 Future<bool> verifyDocuhelperToken(token) async {
   final response = await http.post(
-    Uri.parse('http://localhost:8081/auth/verify/docuhelper'),
+    Uri.parse('$DOCUHELPER_AUTH_ENDPOINT/auth/verify/docuhelper'),
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({'token': token}),
   );
@@ -45,7 +46,7 @@ Future<void> signInWithGoogle() async {
 
     // 3) 백엔드에 ID 토큰 전송
     final response = await http.post(
-      Uri.parse('http://localhost:8081/auth/verify/google'),
+      Uri.parse('$DOCUHELPER_AUTH_ENDPOINT/auth/verify/google'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'token': idToken}),
     );

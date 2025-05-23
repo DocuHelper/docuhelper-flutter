@@ -1,0 +1,219 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+"Indicates an Input Object is a OneOf Input Object."
+directive @oneOf on INPUT_OBJECT
+
+interface BaseDomain {
+    createDt: LocalDateTime!
+    uuid: UUID
+}
+
+type AnswerRefWithChunk {
+    answerRef: ChatAnswerRef!
+    chunk: Chunk!
+}
+
+type Chat implements BaseDomain {
+    createDt: LocalDateTime!
+    document: UUID!
+    result: String
+    state: ChatState!
+    userAsk: String!
+    userUuid: UUID!
+    uuid: UUID
+}
+
+type ChatAnswerRef implements BaseDomain {
+    chat: UUID!
+    chunk: UUID!
+    createDt: LocalDateTime!
+    similarity: Float!
+    uuid: UUID
+}
+
+type Chunk implements BaseDomain {
+    content: String!
+    createDt: LocalDateTime!
+    document: UUID!
+    embedContent: [Float!]!
+    num: Int!
+    page: Int!
+    uuid: UUID
+}
+
+type ChunkWithSimilarity {
+    chunk: Chunk!
+    similarity: Float!
+}
+
+type CounterResponse {
+    value: Int!
+}
+
+type Document implements BaseDomain {
+    createDt: LocalDateTime!
+    file: UUID!
+    name: String!
+    owner: UUID!
+    state: DocumentState!
+    type: DocumentType!
+    updateDocumentState(state: DocumentState!): Document!
+    uuid: UUID
+}
+
+type Mutation {
+    createDocument(request: CreateDocumentRequestInput!): Document!
+    deleteDocument(uuid: UUID!): Boolean!
+    send(request: ChatSendRequestInput!): Chat!
+    uploadFileUrl(fileInfo: CreateUploadUrlRequestInput!): UploadUrl!
+}
+
+type Query {
+    findAnswerRef(request: AnswerRefQueryRequestInput!): [ChatAnswerRef!]!
+    findAnswerRefWithChunk(request: AnswerRefQueryRequestInput!): [AnswerRefWithChunk!]!
+    findChat(queryRequest: ChatQueryRequestInput!): [Chat!]!
+    findChunkByEmbedValue(document: UUID!, text: String!): [ChunkWithSimilarity!]!
+    findDocument(query: DocumentQueryRequestInput!): [Document!]!
+    loginState: User
+    test(request: TestRequestInput!): [TestResponse!]!
+}
+
+type Subscription {
+    "Returns a random number every second"
+    counter(limit: Int): CounterResponse!
+    "Returns a random number every second, errors if even"
+    counterWithError: Int!
+    "Returns stream of values"
+    flow: Int!
+    "Returns stream of errors"
+    flowOfErrors: String
+    "Returns one value then an error"
+    singleValueThenError: Int!
+    subNotice: String!
+}
+
+type TestResponse {
+    test: String!
+    value: Int!
+}
+
+type UploadUrl {
+    url: URL!
+    uuid: UUID!
+}
+
+type User {
+    email: String!
+    role: UserRole!
+    uuid: UUID!
+}
+
+type UserToken implements BaseDomain {
+    availableToken: Int!
+    createDt: LocalDateTime!
+    limitToken: Int!
+    updateToken(diff: Int!): UserToken!
+    userUUID: UUID!
+    uuid: UUID
+}
+
+type UserTokenHistory implements BaseDomain {
+    createDt: LocalDateTime!
+    diff: Int!
+    type: TokenHistoryType!
+    userUuid: UUID!
+    uuid: UUID
+}
+
+enum ChatState {
+    COMPETE
+    PROCESSING
+}
+
+enum DocumentState {
+    COMPLETE
+    EMBEDDING
+    Fail
+    PARSING
+    READING
+}
+
+enum DocumentType {
+    DOC
+    HTML
+    PDF_MULTI_COLUMN
+    PDF_SINGLE_COLUMN
+    PPT
+    TEXT
+}
+
+enum TokenHistoryType {
+    CHAT
+}
+
+enum UserRole {
+    BASIC
+    ENTERPRISE
+    FREE
+    PREMIUM
+}
+
+"A custom scalar LocalDateTime."
+scalar LocalDateTime
+
+"A custom scalar that handles 64-bit integer (Kotlin Long)."
+scalar Long
+
+scalar URL
+
+"A type representing a formatted java.util.UUID"
+scalar UUID
+
+input AnswerRefQueryRequestInput {
+    chat: UUID!
+    pagination: PaginationInput
+}
+
+input ChatQueryRequestInput {
+    document: UUID
+    pagination: PaginationInput
+}
+
+input ChatSendRequestInput {
+    ask: String!
+    document: UUID!
+}
+
+input CreateDocumentRequestInput {
+    file: UUID!
+    name: String!
+    type: DocumentType!
+}
+
+input CreateUploadUrlRequestInput {
+    extension: String!
+    name: String!
+    size: Long!
+}
+
+input DocumentQueryRequestInput {
+    name: String
+    pagination: PaginationInput
+    state: DocumentState
+    uuid: UUID
+}
+
+input PaginationInput {
+    limit: Int!
+    offset: Long!
+}
+
+input TestRequestInput {
+    value: Int!
+}
