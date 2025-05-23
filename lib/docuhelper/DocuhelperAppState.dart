@@ -24,6 +24,7 @@ class DocuhelperAppState extends ChangeNotifier {
   List<Query$FindDocument$findDocument> userDocuments = [];
   Query$FindDocument$findDocument? selectedDocument = null;
   List<Query$FindChat$findChat> userChatHistory = [];
+  Function()? _scrollCallback;
 
   int subTestValue = 0;
 
@@ -33,6 +34,9 @@ class DocuhelperAppState extends ChangeNotifier {
     loadChatHistory();
     subTest();
     subUserNotice();
+  }
+  void registerScrollCallback(Function()? callback) {
+    _scrollCallback = callback;
   }
 
   void subUserNotice() async {
@@ -56,6 +60,7 @@ class DocuhelperAppState extends ChangeNotifier {
             );
             if (index == -1) {
               userChatHistory.add(chat);
+              _scrollCallback?.call();
             } else {
               userChatHistory[index] = chat;
             }
@@ -78,6 +83,7 @@ class DocuhelperAppState extends ChangeNotifier {
                   userAsk: originalChat.userAsk,
                   result: mergeResult,
                   uuid: originalChat.uuid);
+              _scrollCallback?.call();
             }
 
             break;

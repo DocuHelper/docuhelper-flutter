@@ -2,19 +2,49 @@ import 'package:docuhelper_flutter/docuhelper/DocuhelperAppState.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatLog extends StatelessWidget {
+class ChatLog extends StatefulWidget {
   const ChatLog({
     super.key,
   });
 
   @override
+  State<ChatLog> createState() => _ChatLogState();
+}
+
+class _ChatLogState extends State<ChatLog> {
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      },
+    );
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final appState= context.read<DocuhelperAppState>();
+    appState.registerScrollCallback(_scrollToBottom);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appState = context.watch<DocuhelperAppState>();
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         children: appState.userChatHistory.map(
           (e) {
-            return Chat(question: e.userAsk, answer: e.result ?? "뒤적뒤적");
+            return Chat(question: e.userAsk, answer: e.result ?? "뒤적뒤적...");
           },
         ).toList(),
       ),
